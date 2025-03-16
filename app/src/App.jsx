@@ -11,13 +11,11 @@
 import NavBar from './components/NavBar';
 import GifContainer from './components/GifContainer';
 import GifSearch from './components/GifSearch';
-import API_KEY from '../config.js';
-
-const trendAPI = `https://api.giphy.com/v1/gifs/trending?api_key=${API_KEY}&rating=g`;
-
-const searchAPI = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=QUERY&rating=g`;
+import { useState } from 'react';
 
 const App = () => {
+  const [gif, setGif] = useState();
+
   return (
     <div>
       <NavBar color="black" title="Giphy Search" />
