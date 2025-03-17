@@ -1,6 +1,9 @@
+<!-- @format -->
+
 # Giphy Search
 
 **Table of Contents**
+
 - [Assignment Overview](#assignment-overview)
   - [Set Up](#set-up)
   - [Starter Code](#starter-code)
@@ -20,6 +23,7 @@
 ## Assignment Overview
 
 In this assignment, you will be building out a fun project to fetch Gifs from the GIPHY API. You'll be practicing the following skills
+
 - working with an API key
 - fetching from an API using the adapter pattern
 - using React's `useEffect` hook
@@ -66,6 +70,7 @@ Once you've mapped out the component hierarchy, start building!
 ### Get an API Key
 
 You will be using the [Giphy API](https://developers.giphy.com/docs/api#quick-start-guide) and will need to register for an API key.
+
 - Create an account
 - Create an API Key
 - Copy the API Key
@@ -93,10 +98,11 @@ It is a bad practice to push any code that exposes your API key to your repo. Yo
 > NOTE: The technique below will not protect your API key if you were to deploy it. You need to deploy a backend to properly hide your API keys.
 
 #### TODO 1
+
 - Create a `config.js` file with the following (the name of the file is arbitrary):
 
 ```js
-const API_KEY = "PASTE_YOUR_API_KEY_HERE";
+const API_KEY = 'PASTE_YOUR_API_KEY_HERE';
 
 export default API_KEY;
 ```
@@ -105,7 +111,7 @@ export default API_KEY;
 - Wherever you need the `API_KEY`, import it from `config.js`
 
 ```js
-import API_KEY from 'path/to/config.js'
+import API_KEY from 'path/to/config.js';
 ```
 
 ### Adapters + handleFetch
@@ -118,27 +124,30 @@ To support this pattern, we've provided a directory called **src/adapters/** for
 
 #### handleFetch.js
 
-This file exports a `handleFetch` helper function. This function's behavior should mostly be familiar to you. This particular implementation always returns a "tuple" — an array with two values: `[data, error]`. 
+This file exports a `handleFetch` helper function. This function's behavior should mostly be familiar to you. This particular implementation always returns a "tuple" — an array with two values: `[data, error]`.
 
 Open the **playground.js** file and run it with `node` to see how this function may be used throughout your application:
 
 ```js
-import { handleFetch } from "./adapters/handleFetch.js";
+import { handleFetch } from './adapters/handleFetch.js';
 
 const testHandleFetch = async () => {
-  const [data, error] = await handleFetch('https://dog.ceo/api/breeds/image/random');
+  const [data, error] = await handleFetch(
+    'https://dog.ceo/api/breeds/image/random'
+  );
   if (error) {
     return console.log(error);
   }
   // no error means that our data was fetched!
   console.log(data);
-}
+};
 
 testHandleFetch();
 ```
 
 When we fetch, there are basically two outcomes: we get the data we fetched or an error is thrown. Rather than returning either the data OR the error, we return two values:
-- If the fetch succeeds, the `data` value in the array will be the fetched `data` object while the `error` value will be `null`. 
+
+- If the fetch succeeds, the `data` value in the array will be the fetched `data` object while the `error` value will be `null`.
 - If an error is thrown, the `data` value in the array will be `null` while the `error` value will be the thrown `error` object.
 
 By returning a tuple, the caller of this `handleFetch` helper is able to immediately know whether or not an `error` occurred. If the `error` exists, then we can easily handle it. If the `error` is `null`, then we know that the `data` was fetched successfully.
@@ -147,7 +156,7 @@ If we only returned a single value, either the data OR the error, then the calle
 
 #### giphyAdapters.js
 
-This file exports two functions for fetching from various endpoints from the GIPHY API. Each function's sole purpose is to send a fetch request using the `handleFetch` helper and return the data in a desired format. 
+This file exports two functions for fetching from various endpoints from the GIPHY API. Each function's sole purpose is to send a fetch request using the `handleFetch` helper and return the data in a desired format.
 
 For example, an adapter to fetch a dog image from the [Dog API](https://dog.ceo/dog-api/) might look like this:
 
@@ -158,13 +167,14 @@ const getDogImageByBreed = (breed) => {
 
   // The data returned will look like this: { "message": "image_url_to_dog_picture", "status": "success" }
   // The user of this adapter only cares about the message.
-  return [data.message, error]
-}
+  return [data.message, error];
+};
 ```
 
 #### TODO 2
 
 In **giphyAdapters.js**
+
 - Import the API Key from your `config.js` file
 - Complete the `getTrendingGifs` adapter to fetch from the `trending/` endpoint
 
@@ -183,12 +193,13 @@ In **giphyAdapters.js**
   It should return a tuple containing the first three `gifs` fetched from this endpoint and the `error` (remember, the `error` will be `null` if the fetch is successful).
 
 In **playground.js**:
-* Before continuing, test your completed adapter functions to ensure they work. 
-* Import your functions and console log the results. 
+
+- Before continuing, test your completed adapter functions to ensure they work.
+- Import your functions and console log the results.
 
 ```js
 // in playground.js...
-import { getTrendingGifs, getGifsBySearch } from "./adapters/giphyAdapters";
+import { getTrendingGifs, getGifsBySearch } from './adapters/giphyAdapters';
 
 const testAdapters = async () => {
   const trendingTuple = await getTrendingGifs();
@@ -196,12 +207,12 @@ const testAdapters = async () => {
 
   console.log(trendingTuple);
   console.log(searchTuple);
-}
+};
 
 testAdapters();
 ```
 
-* Run the playground file using `node`.
+- Run the playground file using `node`.
 
 ### Use Adapters with useEffect & Render the Gifs
 
@@ -242,21 +253,24 @@ There are 10 tasks to complete and 3 bonuses. As you work, return to this README
 Your goal is to meet at least 75% of these requirements to complete the assignment. But don't stop there! Shoot for 100%!
 
 **Functionality:**
-- [ ] When a user first loads the app, they should see 3 gifs from today's [Giphy API "Trending Gifs" endpoint](https://developers.giphy.com/docs/api/endpoint#trending).
-- [ ] The user can search for gifs using the [Giphy API search endpoint](https://developers.giphy.com/docs/api/endpoint#search).
-- [ ] The app updates the gifs on the page, displaying 3 at a time, **every time the user clicks the Find Gifs button**.
+
+- [x] When a user first loads the app, they should see 3 gifs from today's [Giphy API "Trending Gifs" endpoint](https://developers.giphy.com/docs/api/endpoint#trending).
+- [x] The user can search for gifs using the [Giphy API search endpoint](https://developers.giphy.com/docs/api/endpoint#search).
+- [x] The app updates the gifs on the page, displaying 3 at a time, **every time the user clicks the Find Gifs button**.
 - [ ] Bonus: if an error occurs, the `defaultGifs` from `gifs.json` are displayed along with a message reading `"Sorry, the GIPHY API is not working, but here are some cats"`.
 
 **React Fundamentals**
-- [ ] Props are extracted in child components using destructuring
-- [ ] `useState` is used to manage state
-- [ ] `useEffect` is used to perform an asynchronous fetch call.
-- [ ] The gifs are displayed as an unordered list (`ul`)
-- [ ] Every `li` in the `ul` has a unique `key` prop
-- [ ] The form is a controlled form.
+
+- [x] Props are extracted in child components using destructuring
+- [x] `useState` is used to manage state
+- [x] `useEffect` is used to perform an asynchronous fetch call.
+- [x] The gifs are displayed as an unordered list (`ul`)
+- [x] Every `li` in the `ul` has a unique `key` prop
+- [x] The form is a controlled form.
 - [ ] Bonus: modify the `useEffect` hook to be re-triggered whenever the user input changes (not just when they click the button).
 
 **Miscellaneous**
-- [ ] The `config.js` file is listed in the `.gitignore` and is NOT included in the final repository.
-- [ ] At no point did you ever use any vanilla DOM JS methods (e.g. `document.querySelector` or `document.createElement`)
+
+- [x] The `config.js` file is listed in the `.gitignore` and is NOT included in the final repository.
+- [x] At no point did you ever use any vanilla DOM JS methods (e.g. `document.querySelector` or `document.createElement`)
 - [ ] Bonus: Display the gifs as a grid using flexbox or grid!
