@@ -22,8 +22,8 @@ export const getTrendingGifs = async () => {
 };
 
 // Send a fetch request to the /search endpoint with the given term as a query parameter
-export const getGifsBySearch = async (term) => {
-  const searchEP = `${baseUrl}/search?api_key=${API_KEY}&q=${term}&rating=g`;
+export const getGifsBySearch = async (searchTerm) => {
+  const searchEP = `${baseUrl}/search?api_key=${API_KEY}&q=${searchTerm}&rating=g`;
   const [data, error] = await handleFetch(searchEP);
 
   return [data.data.slice(0, 3), error];

@@ -14,7 +14,7 @@ import defaultGifs from '../gifs.json';
 import { getGifsBySearch, getTrendingGifs } from '../adapters/giphyAdapters';
 import { useEffect, useState } from 'react';
 
-const GifContainer = () => {
+const GifContainer = ({ searchTerm }) => {
   const [gifs, setGifs] = useState([]);
   const [error, setError] = useState('');
 
@@ -22,15 +22,35 @@ const GifContainer = () => {
     const doFetch = async () => {
       const [gifs, error] = await getTrendingGifs();
       if (gifs) setGifs(gifs);
-      if (error) setError(error);
-      console.log(gifs);
+      if (error) {
+        setError(error);
+        setGifs(defaultGifs);
+      }
     };
     doFetch();
   }, []);
 
+  useEffect(() => {
+    if (!searchTerm) {
+      setGifs(defaultGifs);
+      return;
+    }
+
+    const doFetch = async () => {
+      const [gifs, error] = await getGifsBySearch(searchTerm);
+      if (gifs) setGifs(gifs);
+      if (error) {
+        setError(error);
+        setGifs(defaultGifs);
+      }
+    };
+
+    doFetch();
+  }, [searchTerm]);
+
   return (
     <ul>
-      {gifs.map((gif) => (
+      {(error ? defaultGifs : gifs).map((gif) => (
         <li key={gif.id}>
           <img src={gif.images.original.url} alt={gif.alt_text || 'gif'} />
         </li>
